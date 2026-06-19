@@ -27,6 +27,24 @@ body {
   text-align: center;
 }
 
+/* Bottoni filtro sport nell'header */
+.btn-filtro {
+  padding: 4px 18px;
+  border-radius: 20px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-filtro:hover,
+.btn-filtro.attivo {
+  background: white;
+  color: hsl(220, 60%, 25%);
+}
+
 /* Aggiungi qui le tue regole per: form, risultati, card squadra, eventi. */
 form {
   display: flex;

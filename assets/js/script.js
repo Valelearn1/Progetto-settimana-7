@@ -90,8 +90,10 @@ function èPreferito(id) {
 }
 
 async function cercaSquadre(query) {
+  // aggiunge &s=... solo se è selezionato un filtro sport specifico
+  const filtroSport = sportCorrente ? `&s=${encodeURIComponent(sportCorrente)}` : "";
   const risposta = await fetch(
-    `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${query}`,
+    `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${query}${filtroSport}`,
   );
 
   const dati = await risposta.json();
@@ -186,6 +188,7 @@ async function mostraDettagli(id) {
 // variabili globali
 let squadreCorrente = []; // ricorda l'ultimo array di ricerca
 let squadraSelezionata = null; // ricorda su quale card hai cliccato
+let sportCorrente = ""; // "" = tutti gli sport, altrimenti es. "Soccer"
 
 // === Render ===
 function renderSquadre(squadre) {
@@ -394,6 +397,23 @@ document.getElementById("search").addEventListener(
     const li = e.target.closest(".event-item");
     if (li) apriModalEvento(li);
   });
+});
+
+// Gestisce il click sui bottoni filtro sport:
+// aggiorna sportCorrente, sposta la classe "attivo" e rilancia la ricerca
+document.getElementById("filtri-sport").addEventListener("click", (e) => {
+  const btn = e.target.closest(".btn-filtro");
+  if (!btn) return;
+
+  // sposta la classe "attivo" dal bottone precedente a quello cliccato
+  document.querySelectorAll(".btn-filtro").forEach((b) => b.classList.remove("attivo"));
+  btn.classList.add("attivo");
+
+  sportCorrente = btn.dataset.sport; // "" per "Tutti", altrimenti "Soccer" ecc.
+
+  // rilancia la ricerca con il nuovo filtro se c'è già una query attiva
+  const query = document.getElementById("search").value.trim();
+  if (query) eseguiRicerca(query);
 });
 
 // Mostra subito i preferiti salvati al caricamento della pagina
