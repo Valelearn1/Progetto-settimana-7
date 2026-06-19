@@ -90,18 +90,20 @@ function èPreferito(id) {
 }
 
 async function cercaSquadre(query) {
-  // aggiunge &s=... solo se è selezionato un filtro sport specifico
-  const filtroSport = sportCorrente ? `&s=${encodeURIComponent(sportCorrente)}` : "";
   const risposta = await fetch(
-    `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${query}${filtroSport}`,
+    `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${query}`,
   );
 
   const dati = await risposta.json();
-  if (dati.teams === null) {
-    return [];
-  } else {
-    return dati.teams.map((team) => new Squadra(team));
-  }
+  if (dati.teams === null) return [];
+
+  // ogni squadra nell'API ha il campo strSport (es. "Soccer", "Basketball")
+  // se è selezionato un filtro, teniamo solo le squadre di quello sport
+  const teams = sportCorrente
+    ? dati.teams.filter((t) => t.strSport === sportCorrente)
+    : dati.teams;
+
+  return teams.map((team) => new Squadra(team));
 }
 
 async function caricaDettagli(teamId) {
