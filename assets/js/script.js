@@ -12,21 +12,47 @@
 //
 // Per le versioni Intermedia/Avanzata: localStorage preferiti, debounce, Promise.all multi.
 
-
 // === Classi ===
+class Squadra {
+  constructor(dati) {
+    this.id = dati.idTeam;
+    this.team = dati.strTeam;
+    this.badge = dati.strBadge;
+    this.league = dati.strLeague;
+    this.country = dati.strCountry;
+  }
+}
 
+class Evento {
+  constructor(evento) {
+    this.id = evento.idEvent;
+    this.date = evento.dateEvent;
+    this.homeTeam = evento.strHomeTeam;
+    this.awayTeam = evento.strAwayTeam;
+    this.homeScore = evento.intHomeScore;
+    this.awayScore = evento.intAwayScore;
+  }
 
+  formattaData() {
+    return new Date(this.date).toLocaleDateString("it-IT", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+
+  punteggio() {
+    if (this.homeScore !== null) {
+      return `${this.homeScore} - ${this.awayScore}`;
+    }
+    return null;
+  }
+}
 
 // === API ===
 
-
-
 // === Stato ===
 
-
-
 // === Render ===
-
-
 
 // === Eventi ===
