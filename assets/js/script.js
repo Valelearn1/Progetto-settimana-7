@@ -216,6 +216,26 @@ function renderSquadre(squadre) {
   }
 }
 
+// Crea un <li> cliccabile per un evento, con i dati salvati come data-*
+function creaLiEvento(evento, mostraPunteggio) {
+  const li = document.createElement("li");
+  li.className = "event-item";
+  // salva i dati sull'elemento per leggerli quando si apre il modal
+  li.dataset.home = evento.homeTeam;
+  li.dataset.away = evento.awayTeam;
+  li.dataset.date = evento.date;
+  li.dataset.homeScore = evento.homeScore ?? "";
+  li.dataset.awayScore = evento.awayScore ?? "";
+
+  const punteggio = evento.punteggio();
+  li.innerHTML = `
+    <span class="event-date">${evento.formattaData()}</span>
+    <span class="event-teams">${evento.homeTeam} vs ${evento.awayTeam}</span>
+    ${mostraPunteggio && punteggio ? `<span class="event-score">${punteggio}</span>` : ""}
+  `;
+  return li;
+}
+
 function renderDettagli(prossimi, ultimi) {
   const listaProssimi = document.getElementById("lista-prossimi");
   const listaUltimi = document.getElementById("lista-ultimi");
@@ -227,28 +247,41 @@ function renderDettagli(prossimi, ultimi) {
   if (prossimi.length === 0) {
     listaProssimi.innerHTML = "<li>Nessun evento in programma.</li>";
   } else {
-    prossimi.forEach((evento) => {
-      const li = document.createElement("li");
-      li.textContent = `${evento.formattaData()} — ${evento.homeTeam} vs ${evento.awayTeam}`;
-      listaProssimi.appendChild(li);
-    });
+    // false = non mostrare punteggio (eventi futuri non ce l'hanno)
+    prossimi.forEach((evento) => listaProssimi.appendChild(creaLiEvento(evento, false)));
   }
 
   if (ultimi.length === 0) {
     listaUltimi.innerHTML = "<li>Nessun risultato disponibile.</li>";
   } else {
-    ultimi.forEach((evento) => {
-      const li = document.createElement("li");
-      let score;
-      if (evento.punteggio() === null) {
-        score = "—";
-      } else {
-        score = evento.punteggio();
-      }
-      li.textContent = `${evento.formattaData()} — ${evento.homeTeam} vs ${evento.awayTeam} ${score}`;
-      listaUltimi.appendChild(li);
-    });
+    // true = mostra il punteggio finale
+    ultimi.forEach((evento) => listaUltimi.appendChild(creaLiEvento(evento, true)));
   }
+}
+
+// Popola e apre il modal Bootstrap con i dati dell'evento cliccato
+function apriModalEvento(li) {
+  const home = li.dataset.home;
+  const away = li.dataset.away;
+  const data = new Date(li.dataset.date).toLocaleDateString("it-IT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const homeScore = li.dataset.homeScore;
+  const awayScore = li.dataset.awayScore;
+  const hasPunteggio = homeScore !== "";
+
+  document.getElementById("modal-evento-titolo").textContent = `${home} vs ${away}`;
+  document.getElementById("modal-evento-corpo").innerHTML = `
+    <p><strong>Data:</strong> ${data}</p>
+    <p><strong>Casa:</strong> ${home}</p>
+    <p><strong>Trasferta:</strong> ${away}</p>
+    ${hasPunteggio ? `<p><strong>Risultato:</strong> ${homeScore} – ${awayScore}</p>` : ""}
+  `;
+
+  // bootstrap.Modal è disponibile perché Bootstrap JS è caricato nell'HTML
+  new bootstrap.Modal(document.getElementById("modal-evento")).show();
 }
 
 // === Eventi ===
@@ -354,6 +387,14 @@ document.getElementById("search").addEventListener(
   "input",
   debounce(() => eseguiRicerca(document.getElementById("search").value.trim()), 400),
 );
+
+// Click su un evento nella lista → apre il modal con i dettagli
+["lista-prossimi", "lista-ultimi"].forEach((listaId) => {
+  document.getElementById(listaId).addEventListener("click", (e) => {
+    const li = e.target.closest(".event-item");
+    if (li) apriModalEvento(li);
+  });
+});
 
 // Mostra subito i preferiti salvati al caricamento della pagina
 renderPreferiti();

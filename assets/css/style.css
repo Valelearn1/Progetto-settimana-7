@@ -78,9 +78,57 @@ form {
 .card {
   display: flex;
   align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
 }
 
 .card-img-top {
   max-width: 50%;
   padding-top: 20px;
+}
+
+/* Lista eventi: toglie i pallini di default del <ul> */
+.event-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Ogni riga-evento: bordo colorato a sinistra, sfondo bianco, cliccabile */
+.event-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-left: 3px solid hsl(220, 60%, 25%);
+  border-radius: 0 6px 6px 0;
+  background: white;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.event-item:hover {
+  background: hsl(220, 60%, 94%);
+}
+
+/* Data in piccolo e muted */
+.event-date {
+  font-size: 0.78rem;
+  color: #888;
+}
+
+/* Nomi squadre in grassetto */
+.event-teams {
+  font-weight: 600;
+}
+
+/* Punteggio in evidenza */
+.event-score {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: hsl(220, 60%, 25%);
 }
