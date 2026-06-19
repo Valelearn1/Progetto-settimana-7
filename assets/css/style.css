@@ -126,9 +126,24 @@ form {
   font-weight: 600;
 }
 
-/* Punteggio in evidenza */
+/* Punteggio come badge verde */
 .event-score {
-  font-size: 0.9rem;
+  display: inline-block;
+  align-self: flex-start;
+  background: #2d7a3e;
+  color: white;
+  font-size: 0.8rem;
   font-weight: bold;
-  color: hsl(220, 60%, 25%);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Su tablet (md): 2 card per riga.
+   Se l'ultima card è sola nella sua riga (posizione dispari),
+   la allarghiamo a tutto il contenuto. */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .col-md-6:last-child:nth-child(odd) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }

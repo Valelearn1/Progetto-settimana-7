@@ -146,7 +146,7 @@ function renderPreferiti() {
 
   preferiti.forEach((dati) => {
     const col = document.createElement("div");
-    col.className = "col-12 col-md-4 col-lg-3";
+    col.className = "col-12 col-md-6 col-lg-3";
     col.innerHTML = `
       <div class="card" data-id="${dati.id}">
         <img src="${dati.badge}" alt="${dati.team}" class="card-img-top">
@@ -197,7 +197,7 @@ function renderSquadre(squadre) {
   } else {
     squadre.forEach((squadra) => {
       const col = document.createElement("div");
-      col.className = "col-12 col-md-4 col-lg-3";
+      col.className = "col-12 col-md-6 col-lg-3";
       // data-id sull'elemento .card permette di risalire all'id dal click
       col.innerHTML = `
     <div class="card" data-id="${squadra.id}">
