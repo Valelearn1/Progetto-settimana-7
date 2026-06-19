@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SportsHub — Eventi sportivi</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <!-- Titolo dell'app + form di ricerca -->
+      <h1>SportsHub</h1>
+      <p>Cerca una squadra, scopri prossime partite e ultimi risultati.</p>
+      <form>
+        <input
+          type="search"
+          id="search"
+          class="form-control"
+          placeholder="es. Arsenal, Lakers, Real Madrid..."
+        />
+
+        <button type="submit" class="btn btn-cerca">Cerca</button>
+      </form>
+    </header>
+
+    <main class="container">
+      <section id="risultati-section">
+        <div id="spinner" class="text-center py-5 d-none">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento…</span>
+          </div>
+        </div>
+
+        <div id="errore" class="alert alert-danger d-none" role="alert"></div>
+
+        <div id="sezione-preferiti">
+          <h3>⭐ Le tue squadre preferite</h3>
+          <p id="msg-preferiti">Non hai ancora salvato nessuna squadra. Cercane una qui sopra e aggiungila ai preferiti.</p>
+        </div>
+
+        <div id="sezione-ricerca">
+          <h3>Squadre trovate</h3>
+          <p id="msg-ricerca">Inizia cercando una squadra qui sopra.</p>
+          <div id="cards-container" class="row g-3"></div>
+        </div>
+      </section>
+
+      <section id="dettagli-section" hidden>
+        <!-- Visibile dopo click su una squadra: prossimi eventi + ultimi risultati -->
+        <button id="btn-indietro" class="btn btn-outline-secondary mb-4">
+          &larr; Torna ai risultati
+        </button>
+
+        <div
+          id="team-header"
+          class="d-flex align-items-center gap-3 mb-4"
+        ></div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <h3 class="section-title">Prossimi eventi</h3>
+            <ul id="lista-prossimi" class="event-list"></ul>
+          </div>
+          <div class="col-md-6">
+            <h3 class="section-title">Ultimi risultati</h3>
+            <ul id="lista-ultimi" class="event-list"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>
